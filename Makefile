@@ -16,7 +16,8 @@ SRCDIR			:= src
 
 # *********************************** Files ***********************************
 NAME			:= cub3D
-SRC				:= $(SRCDIR)/cub3D.c
+SRC				:=	$(SRCDIR)/cub3D.c \
+					$(SRCDIR)/parsing.c
 OBJ				:= $(SRC:%.c=$(OBJDIR)/%.o)
 
 # ********************************* include ***********************************
@@ -34,7 +35,7 @@ all : $(NAME)
 
 $(NAME) : $(OBJ)
 	@echo "$(GREEN) Loading ... $(PURPLE) Build The Game $(DFL)";sleep 2
-	@$(CC) -I $(INC) $(CFLAGS) $< -o $@
+	@$(CC) -I $(INC) $(CFLAGS) $(OBJ) -o $(NAME)
 	@echo "$(YELLOW) Enjoy $(DFL)"
 
 $(OBJDIR)/%.o : %.c
