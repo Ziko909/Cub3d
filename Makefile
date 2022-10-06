@@ -8,8 +8,8 @@ BLUE			:= \033[0;34m
 PURPLE			:= \033[0;35m
 CYAN			:= \033[0;36m
 # ******************************** Library ************************************
-Libft			:= lib/libft
-
+LIBFT			:= lib/libft/libft.a
+LIB				:= lib
 # ******************************** Directories ********************************
 OBJDIR			:= obj
 SRCDIR			:= src
@@ -23,7 +23,7 @@ OBJ				:= $(SRC:%.c=$(OBJDIR)/%.o)
 # ********************************* include ***********************************
 INC				:= include
 # ******************************** Compiler ***********************************
-CC				:= gcc
+CC				:= cc
 CFLAGS			:= -Wall -Wextra -Werror -fsanitize=address
 
 # ******************************** Shell cmd **********************************
@@ -31,20 +31,25 @@ RM				:= rm -rf
 MD				:= mkdir -p
 
 #################################################################################
-all : $(NAME)
+all : $(LIB) $(NAME)
 
+$(LIB) :
+	make -C lib/libft/
 $(NAME) : $(OBJ)
 	@echo "$(GREEN) Loading ... $(PURPLE) Build The Game $(DFL)";sleep 2
-	@$(CC) -I $(INC) $(CFLAGS) $(OBJ) -o $(NAME)
+	@$(CC) -I $(INC) $(CFLAGS) -L $(LIBFT) $(OBJ) -o $(NAME)
 	@echo "$(YELLOW) Enjoy $(DFL)"
 
 $(OBJDIR)/%.o : %.c
 	@$(MD) $(dir $@)
-	@$(CC)  -I $(INC) $(CFLAGS) -c $< -o $@
+	@$(CC) -I $(INC) $(CFLAGS) -c $< -o $@
 	@echo "$(YELLOW) the Object File of $(CYAN) $< was generated $(DFL)";
 
 re : fclean all
+
 clean :
 	@$(RM) $(OBJDIR)
+	@make clean -C lib/libft
 fclean : clean
 	@$(RM) $(NAME)
+	@$(RM) $(LIBFT)
