@@ -31,7 +31,7 @@ NAME			:=	cub3d
 
 SRC				:= src/main_function/cub3D.c src/ft_parse/ft_check.c src/ft_parse/ft_check_map.c src/ft_parse/ft_check_map_utils.c \
 					src/ft_parse/ft_check_textures.c src/ft_parse/ft_check_textures_utils.c src/ft_parse/ft_lists.c \
-					src/ft_parse/start_processing.c
+					src/ft_parse/start_processing.c src/mini_map/test.c 
 
 SRC_GNL			:= get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
 
@@ -44,7 +44,7 @@ INC				:= include
 
 # ******************************** Compiler ***********************************
 CC				:= cc
-CFLAGS			:= -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS			:= -Wall -Wextra -Werror #-g -fsanitize=address
 
 # ******************************** Shell cmd **********************************
 RM				:= rm -rf
@@ -60,12 +60,12 @@ $(LIBFT) :
 
 $(NAME) : $(LIBFT) $(OBJ) $(OBJ_GNL)
 	@echo "$(BBlue) Loading ... $(BBlue) Building The Game $(DFL)";sleep 2
-	@$(CC) -I $(INC) -I $(INC)/get_next_line $(CFLAGS) $(LIBFT) $(OBJ) $(OBJ_GNL) -o $(NAME)
+	@$(CC) -I $(INC) -I -Lmlx -lmlx -framework OpenGL -framework AppKit -I $(INC)/get_next_line $(CFLAGS) $(LIBFT) $(OBJ) $(OBJ_GNL) -o $(NAME)
 	@echo "$(BYellow) Enjoy $(DFL)"
 
 $(OBJDIR)/%.o : %.c
 	@$(MD) $(dir $@)
-	@$(CC) -I $(INC) -I $(INC)/get_next_line $(CFLAGS) -c $< -o $@
+	@$(CC) -I $(INC) -Imlx -I $(INC)/get_next_line $(CFLAGS) -c $< -o $@
 	@echo "$(BGreen) The Object file $(BCyan) ~ $< $(BGreen): was generated $(DFL)";
 
 re : fclean all
