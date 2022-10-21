@@ -6,7 +6,7 @@
 /*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:06:31 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/17 13:56:56 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/19 16:38:15 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,12 @@ bool	check_circumference(int j, char *line, char *prev_line, char *next_line)
 	return (true);
 }
 
-void	check_map_validity(t_var *g, char **map, int nb_line)
+void	check_map_validity(t_var *g, char **map)
 {
 	int		i;
 	int		j;
 	
 	i = -1;
-	(void)nb_line;
 	while (map[++i])
 	{
 		j = -1;
@@ -50,9 +49,9 @@ void	check_map_validity(t_var *g, char **map, int nb_line)
 				|| map[i][j] == 'S')
 			{
 				if (i == 0 || !valid_index(j, map[i - 1], map[i + 1]))
-					ft_put_error("invalid index");
+					ft_put_error("Map must be surrounded by walls");
 				if (!check_circumference(j, map[i], map[i - 1], map[i + 1]))
-					ft_put_error("cirumference error");
+					ft_put_error("Map must be surrounded by walls");
 				save_player_position(g, map[i][j], i, j);
 			}
 		}
@@ -67,15 +66,18 @@ void	store_check_map_validity(t_var *g, t_game *head, int count)
 	int		i;
 
 	temp = head;
-	i = 0;
+	g->large_line = 0;
+	i = -1;
 	g->map = ft_calloc(sizeof (char *), count + 1);
 	while (temp && ft_strncmp(temp->line, "\n", 1) != 0)
 	{
-		g->map[i] = temp->line;
+		if (g->large_line < (int) ft_strlen(temp->line))
+			g->large_line = (int) ft_strlen(temp->line);
+		g->map[++i] = temp->line;
 		temp = temp->next;
-		i++;
 	}
-	check_map_validity(g, g->map, i);
+	g->map_lines = count;
+	check_map_validity(g, g->map);
 }
 
 int		count_map_lines(t_game *head)
@@ -93,7 +95,7 @@ int		count_map_lines(t_game *head)
 	return (count);
 }
 
-int		ft_check_map(t_var *g, t_game *head)
+void	ft_check_map(t_var *g, t_game *head)
 {
 	t_game	*temp;
 	int		count;
@@ -104,5 +106,4 @@ int		ft_check_map(t_var *g, t_game *head)
 		temp = temp->next;
 	count = count_map_lines(temp);
 	store_check_map_validity(g, temp, count);
-	return (1);
 }

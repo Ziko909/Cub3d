@@ -6,7 +6,7 @@
 /*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:02:56 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/17 11:22:03 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/20 02:12:54 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ void	check_no_repeat(char *str)
 	int		i;
 	int		j;
 
-	i = 0;
-	j = 1;
-	while (str[i])
+	i = -1;
+	while (str[++i])
 	{
+		j = i + 1;
 		while (str[j])
 		{
 			if (str[j] == str[i])
-				ft_put_error("Syntax is not correct");
+				ft_put_error("Syntax is not correct0");
 			j++;
 		}
-		i++;
-		j = i + 1;
 	}
+	if (i != 6)
+		ft_put_error("Syntax is not correct1");
 }
 
 int		check_if_exist(char *word, char *str)
@@ -37,17 +37,19 @@ int		check_if_exist(char *word, char *str)
 	int		i;
 	int		j;
 
-	j = 0;
 	i = 0;
 	while (str[i])
 	{
+		j = 0;
 		if (str[i] == word[j])
 		{
-			j++;
-			if (word[j] == '\0')
+			if ((word[j] == 'C' || word[j] == 'F') && !word[j + 1])
 				return (1);
-			else if (str[++i] == word[j])
-				return (1);
+			else if (word[j] != 'C' && word[j] != 'F')
+			{
+				if ((word[j + 1] == str[i + 1]) && !word[j + 2])
+					return (1);
+			}
 		}
 		i++;
 	}
@@ -65,13 +67,15 @@ void	check_commas(char *str)
 	while (str[i])
 	{
 		if (str[i] == ',')
+		{
 			count++;
-		if ((str[0] == ',') || (str[i] == ',' && str[i + 1] == ','))
-			ft_put_error("Syntax is not correct");
+			if (!ft_isdigit(str[i - 1]) || !ft_isdigit(str[i + 1]))
+				ft_put_error("Syntax is not correct.");
+		}
 		i++;
 	}
 	if (count != 2)
-		ft_put_error("Syntax is not correct");
+		ft_put_error("Syntax is not correct..");
 }
 
 int		ft_strisnum(char *str)
@@ -79,16 +83,23 @@ int		ft_strisnum(char *str)
 	int	i;
 
 	i = 0;
-	ft_skip_space(str);
-	if (str[i + 1] == '\0')
-		ft_put_error("There is no number");
+	while (*str == ' ' && *str)
+		str++;
 	while (str[i])
 	{
-		if (ft_isdigit(str[i]))
+		if (!ft_isdigit(str[i]))
 			ft_put_error("Color channels must be expressed in decimal");
 		i++;
 	}
 	return (1);
+}
+
+void	check_paths(t_var *g)
+{
+	if (g->path_north[0] == '\0' || g->path_south[0] == '\0')
+		ft_put_error("Invalid Path");
+	if (g->path_west[0] == '\0' || g->path_east[0] == '\0')
+		ft_put_error("Invalid Path");
 }
 
 void	ft_print_element(t_var *g)

@@ -6,7 +6,7 @@
 /*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:57:57 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/17 11:13:58 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/21 00:46:25 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,30 @@ int		ft_search(char *str)
 char	*ft_add(char *addto, char *getfrom)
 {
 	char	*new;
+	char	*first;
 
-	new = malloc(sizeof(char) * 2);
-	new[0] = getfrom[0];
-	new[1] = '\0';
-	addto = ft_strjoin(addto, new);
-	free(new);
-	return (addto);
+	first = malloc(sizeof(char) * 2);
+	first[0] = getfrom[0];
+	first[1] = '\0';
+	new = ft_strjoin(addto, first);
+	free(first);
+	return (new);
 }
 
 void    ft_check_store_rgb(t_var *g, char *str, char c)
 {
 	char	**splitted;
+	char	*new;
 	int		i;
 
 	i = -1;
-	check_commas(&str[1]);
-	splitted = ft_split(str, ',');
+	new = ft_strtrim(str, " \t\n");
+	check_commas(new);
+	splitted = ft_split(new, ',');
+	free(new);
 	while (splitted[++i] && ft_strisnum(splitted[i]))
     {
-		if (ft_atoi(splitted[i]) > 255 || ft_atoi(splitted[i]) < 0) // max int overflow 
+		if (ft_atoi(splitted[i]) > 255 || ft_atoi(splitted[i]) < 0) 
 			ft_put_error("Color channel must be expressed from 0 to 255");
     }
 	if (c == 'C')
@@ -66,13 +70,13 @@ void    ft_check_store_rgb(t_var *g, char *str, char c)
 void	ft_store_paths(t_var *g, char c, char *str)
 {
 	if (c == 'N')
-		g->path_north = ft_strtrim(str, " \t");
+		g->path_north = ft_strtrim(str, " \t\n");
 	if (c == 'S')
-		g->path_south = ft_strtrim(str, " \t");
+		g->path_south = ft_strtrim(str, " \t\n");
 	if (c == 'W')
-		g->path_west = ft_strtrim(str, " \t");
+		g->path_west = ft_strtrim(str, " \t\n");
 	if (c == 'E')
-		g->path_east = ft_strtrim(str, " \t");
+		g->path_east = ft_strtrim(str, " \t\n");
 }
 
 t_game	*ft_check_textures(t_var *g, t_game *head)
@@ -99,5 +103,6 @@ t_game	*ft_check_textures(t_var *g, t_game *head)
 		temp = temp->next;
 	}
 	check_no_repeat(str);
+	check_paths(g);
 	return (free(str), temp);
 }
