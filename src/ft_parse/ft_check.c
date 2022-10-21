@@ -6,7 +6,7 @@
 /*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 20:02:42 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/17 14:01:08 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/19 16:37:02 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ void	ft_check_syntax_and_store_element(t_game *head, t_var *g)
 	temp = ft_check_textures(g, head);
 	if (temp)
 		ft_check_map(g, temp);
-	ft_free_lists(head->next);
+	ft_free_lists(head);
 }
