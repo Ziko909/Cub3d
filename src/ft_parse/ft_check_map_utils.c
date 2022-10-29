@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_map_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:09:55 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/19 16:39:37 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/27 11:40:24 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ int		ch(char c)
 	return (0);
 }
 
-void	save_player_position(t_var *g, char c, int i, int j)
+void	save_player_position(t_var *g, char c, int x, int y)
 {
 	if (c == 'S' || c == 'N' || c == 'E' || c == 'W')
 	{
-		g->pos_x = i;
-		g->pos_y = j;
-		g->nb_player++;
+		g->player->pos_x = (x * TILE_SIZE) + (TILE_SIZE / 2);
+		g->player->pos_y = (y * TILE_SIZE) + (TILE_SIZE / 2);
+		g->data->nb_player++;
 	}
 }
 
