@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 05:20:47 by zaabou            #+#    #+#             */
-/*   Updated: 2022/10/17 13:19:21 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/29 22:24:49 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,18 @@ void	ft_put_error(char *error_msg)
 
 void	initialize_data(t_var *g)
 {
-	g->pos_x = -1;
-	g->pos_y = -1;
-	g->path_east = NULL;
-	g->path_north = NULL;
-	g->path_south = NULL;
-	g->path_west = NULL;
-	g->map = NULL;
-	g->nb_player = 0;
-	g->c_color = 0;
-	g->f_color = 0;
+	g->data = ft_calloc(1, sizeof(t_data));
+	g->mlx_ptr = ft_calloc(1, sizeof(t_mlx));
+	g->player = ft_calloc(1, sizeof(t_player));
+	g->head = ft_calloc(1, sizeof(t_ray *));
+	*(g->head) = NULL;
+}
+
+void	init_player_info(t_player *pl)
+{
+	pl->angle = 180 * (PI / 180);
+	pl->m_speed = 3;
+	pl->r_speed = 3 * (PI / 180);
 }
 
 int	main(int ac, char **av)
@@ -42,7 +44,13 @@ int	main(int ac, char **av)
 	{
 		initialize_data(&g);
 		start_processing(av[1], &g);
-		//ft_print_element(&g);
+		init_player_info(g.player);
+		ft_mlx(&g);
+		ft_rendering(&g);
+		creat_rays_list(&g);
+		raycasting(&g);
+		mlx_put_image_to_window((g.mlx_ptr)->ptr_mlx, (g.mlx_ptr)->ptr_win, (g.mlx_ptr)->ptr_img, 0, 0);
+		mlx_loop(g.mlx_ptr->ptr_mlx);
 	}
 	return (0);
 }

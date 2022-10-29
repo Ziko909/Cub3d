@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 05:20:15 by zaabou            #+#    #+#             */
-/*   Updated: 2022/10/20 06:00:14 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/29 10:11:27 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,20 +17,61 @@
 # include <stdbool.h>
 # include "../lib/libft/libft.h"
 # include <mlx.h>
-
+# include <math.h>
+# define PI 3.1415926
+# define WIN_WIDTH 1500
+# define WIN_HEIGHT 900
+# define NUM_RAYS WIN_WIDTH
+# define FOV 60
+# define MINI_MAP_WIDTH 400
+# define MINI_MAP_HEIGHT 200
+# define TILE_SIZE 20
+# define rays_color 0x0000FF00
 typedef struct s_game
 {
     char            *line;
     struct s_game   *next;
 } t_game;
 
-typedef struct s_var
+typedef struct player
 {
-    struct s_game   *head;
-    void            *ptr_mlx;
-    void            *ptr_win;
-    void            *ptr_img;
-    char            *ptr_img_data;
+    int pos_x;
+    int pos_y;
+    int turn;
+    int move;
+    int m_speed;
+    int r_speed;
+    float  angle;
+}t_player;
+
+typedef struct ray
+{
+    int     id;
+    float     h_intersectionx;
+    float     h_intersectiony;
+    float     v_intersectionx;
+    float     v_intersectiony;
+    float     x_intersection;
+    float     y_intersection;
+    float   angle;
+    float   distance_wall;
+    float   distance_rays;
+    struct  ray *next;
+}t_ray;
+
+typedef struct mlx
+{
+    void    *ptr_mlx;
+    void    *ptr_win;
+    void    *ptr_img;
+    char    *ptr_img_data;
+    int     bpp;
+    int     size_len;
+    int     endian;
+}t_mlx;
+
+typedef struct data
+{
     char            **map;
     char            *path_north;
     char            *path_south;
@@ -38,11 +79,17 @@ typedef struct s_var
     char            *path_east;
     int             f_color;
     int             c_color;
-    int             pos_x;
-    int             pos_y;
     int             nb_player;
     int             map_lines;
     int             large_line;
+}t_data;
+
+typedef struct s_var
+{
+    t_player    *player;
+    t_ray       **head;
+    t_mlx       *mlx_ptr;
+    t_data      *data;
 } t_var;
 
 
@@ -92,8 +139,7 @@ void    ft_check_map(t_var *g, t_game *head);
 void	save_check_map_validity(t_var *g, t_game *head, int count);
 void	ft_skip_space(char *str);
 int		ch(char c);
-void	save_player_position(t_var *g, char c, int i, int j);
-
+void	save_player_position(t_var *g, char c, int x, int y);
 
 // GNL
 
@@ -103,14 +149,20 @@ char	*ft_read(int fd, char *buffer);
 char	*get_next_line(int fd);
 int     ft_check_newline(char *s);
 
-// Mini_map Functions :
-
-void    init_and_create_window(t_var *g);
-int     is_player(char c);
-int     get_color(char c);
-void    ft_put(int color, int x, int y);
-void    ft_show_minimap(t_var *g);
-
-
+// mlx api
+void	ft_mlx(t_var *g);
+// rays
+void    ft_add_back(t_ray **head, t_ray *new);
+t_ray   *ft_creat_node(int count);
+void    creat_rays_list(t_var *g);
+void    get_intersection_p(t_var *g, t_ray *ray);
+void	raycasting(t_var *g);
+// rendering
+void	ft_rendering(t_var *g);
+void	ft_draw_line(t_var *g, int x_e, int y_e);
+void	ft_colorize_pixel(t_var *g, int x, int y, int color);
+// minimap system
+void	ft_mini_map(t_var *g);
+void	ft_colorize_img(t_var *g, int color, int x, int y);
 
 #endif
