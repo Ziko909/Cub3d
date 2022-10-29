@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_textures.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:57:57 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/21 00:46:25 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/27 07:24:23 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void    ft_check_store_rgb(t_var *g, char *str, char c)
 			ft_put_error("Color channel must be expressed from 0 to 255");
     }
 	if (c == 'C')
-		g->c_color = ft_atoi(splitted[0]) << 16 | ft_atoi(splitted[1]) << 8
+		g->data->c_color = ft_atoi(splitted[0]) << 16 | ft_atoi(splitted[1]) << 8
 				| ft_atoi(splitted[2]);
 	if (c == 'F')
-		g->f_color = ft_atoi(splitted[0]) << 16 | ft_atoi(splitted[1]) << 8
+		g->data->f_color = ft_atoi(splitted[0]) << 16 | ft_atoi(splitted[1]) << 8
 				| ft_atoi(splitted[2]);
 	free_tdstr(splitted);
 }
@@ -70,13 +70,13 @@ void    ft_check_store_rgb(t_var *g, char *str, char c)
 void	ft_store_paths(t_var *g, char c, char *str)
 {
 	if (c == 'N')
-		g->path_north = ft_strtrim(str, " \t\n");
+		g->data->path_north = ft_strtrim(str, " \t\n");
 	if (c == 'S')
-		g->path_south = ft_strtrim(str, " \t\n");
+		g->data->path_south = ft_strtrim(str, " \t\n");
 	if (c == 'W')
-		g->path_west = ft_strtrim(str, " \t\n");
+		g->data->path_west = ft_strtrim(str, " \t\n");
 	if (c == 'E')
-		g->path_east = ft_strtrim(str, " \t\n");
+		g->data->path_east = ft_strtrim(str, " \t\n");
 }
 
 t_game	*ft_check_textures(t_var *g, t_game *head)
