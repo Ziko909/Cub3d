@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_map.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:06:31 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/19 16:38:15 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/27 07:21:02 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,11 @@ void	check_map_validity(t_var *g, char **map)
 					ft_put_error("Map must be surrounded by walls");
 				if (!check_circumference(j, map[i], map[i - 1], map[i + 1]))
 					ft_put_error("Map must be surrounded by walls");
-				save_player_position(g, map[i][j], i, j);
+				save_player_position(g, map[i][j], j, i);
 			}
 		}
 	}
-	if (g->nb_player != 1)
+	if (g->data->nb_player != 1)
 		ft_put_error("Wrong number of players");
 }
 
@@ -66,18 +66,18 @@ void	store_check_map_validity(t_var *g, t_game *head, int count)
 	int		i;
 
 	temp = head;
-	g->large_line = 0;
+	g->data->large_line = 0;
 	i = -1;
-	g->map = ft_calloc(sizeof (char *), count + 1);
+	g->data->map = ft_calloc(sizeof (char *), count + 1);
 	while (temp && ft_strncmp(temp->line, "\n", 1) != 0)
 	{
-		if (g->large_line < (int) ft_strlen(temp->line))
-			g->large_line = (int) ft_strlen(temp->line);
-		g->map[++i] = temp->line;
+		if (g->data->large_line < (int) ft_strlen(temp->line))
+			g->data->large_line = (int) ft_strlen(temp->line);
+		g->data->map[++i] = ft_strdup(temp->line);
 		temp = temp->next;
 	}
-	g->map_lines = count;
-	check_map_validity(g, g->map);
+	g->data->map_lines = count;
+	check_map_validity(g, g->data->map);
 }
 
 int		count_map_lines(t_game *head)

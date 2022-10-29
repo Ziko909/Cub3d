@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_check_textures_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:02:56 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/20 02:12:54 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/10/27 07:25:54 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,21 +96,21 @@ int		ft_strisnum(char *str)
 
 void	check_paths(t_var *g)
 {
-	if (g->path_north[0] == '\0' || g->path_south[0] == '\0')
+	if (g->data->path_north[0] == '\0' || g->data->path_south[0] == '\0')
 		ft_put_error("Invalid Path");
-	if (g->path_west[0] == '\0' || g->path_east[0] == '\0')
+	if (g->data->path_west[0] == '\0' || g->data->path_east[0] == '\0')
 		ft_put_error("Invalid Path");
 }
 
 void	ft_print_element(t_var *g)
 {
-	printf("ceilling color : %x\n",g->c_color);
-	printf("floor color : %x\n",g->f_color);
-	printf("pos x = %d\n",g->pos_x);
-	printf("pos y = %d\n",g->pos_y);
-	printf("Path N : %s", g->path_north);
-	printf("Path S : %s", g->path_south);
-	printf("Path E : %s", g->path_east);
-	printf("Path W : %s", g->path_west);
-	printf("number of players : %d", g->nb_player);
+	printf("ceilling color : %x\n",g->data->c_color);
+	printf("floor color : %x\n",g->data->f_color);
+	printf("pos x = %d\n",g->player->pos_x);
+	printf("pos y = %d\n",g->player->pos_y);
+	printf("Path N : %s", g->data->path_north);
+	printf("Path S : %s", g->data->path_south);
+	printf("Path E : %s", g->data->path_east);
+	printf("Path W : %s", g->data->path_west);
+	printf("number of players : %d", g->data->nb_player);
 }
