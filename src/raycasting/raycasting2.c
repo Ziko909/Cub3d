@@ -6,24 +6,33 @@
 /*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:05:29 by zaabou            #+#    #+#             */
-/*   Updated: 2022/10/29 22:21:02 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/03 10:18:25 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include <cub3d.h>
+#include <cub3d.h>
 
 bool	is_not_valid_index(char *str, int index)
 {
 	return (str && (index > (int) ft_strlen(str) || index < 0));
 }
 
+double	distance_to_wall(t_var *g, double intersectionx, double intersectiony)
+{
+	return (sqrt(fabs(g->player->pos_x - intersectionx)
+			* fabs(g->player->pos_x - intersectionx)
+			+ (fabs(g->player->pos_y - intersectiony)
+				* fabs(g->player->pos_y - intersectiony))));
+}
+
 bool	is_wall(t_var *g, int x, int y)
 {
 	x = floor(x / TILE_SIZE);
 	y = floor(y / TILE_SIZE);
-	if ((y < 0 || y > (g->data->map_lines - 1)) || is_not_valid_index((g->data->map)[y], x))
+	if ((y < 0 || y > (g->data->map_lines - 1))
+		|| is_not_valid_index((g->data->map)[y], x))
 		return (true);
-	if ((g->data->map)[y][x] == '1')
+	if ((g->data->map)[y][x] == '1' || (g->data->map)[y][x] == ' ')
 		return (true);
 	return (false);
 }
@@ -65,7 +74,9 @@ float	horizontal(t_var *g, t_ray *node)
 	if (node->angle >= 0 && node->angle <= PI)
 		node->h_intersectiony += TILE_SIZE;
 	if (node->angle >= PI / 2 && node->angle <= (3 * PI) / 2)
-		node->h_intersectionx = g->player->pos_x - fabs((fabs(g->player->pos_y - node->h_intersectiony) / tan(node->angle)));
+		node->h_intersectionx = g->player->pos_x
+			- fabs((fabs(g->player->pos_y - node->h_intersectiony)
+					/ tan(node->angle)));
 	else
 		node->h_intersectionx = g->player->pos_x + fabs((fabs(g->player->pos_y - node->h_intersectiony) / tan(node->angle)));
 	while (check_is_wall(g, node, 'h') == false)
@@ -73,7 +84,7 @@ float	horizontal(t_var *g, t_ray *node)
 		node->h_intersectionx += xstep;
 		node->h_intersectiony += ystep;
 	}
-	return (sqrt((fabs(g->player->pos_x - node->h_intersectionx) * fabs(g->player->pos_x - node->h_intersectionx)) + (fabs(g->player->pos_y - node->h_intersectiony) * fabs(g->player->pos_y - node->h_intersectiony))));
+	return (distance_to_wall(g, node->h_intersectionx, node->h_intersectiony));
 }
 
 float	vertical(t_var *g, t_ray *node)
@@ -94,13 +105,12 @@ float	vertical(t_var *g, t_ray *node)
 		node->v_intersectiony = g->player->pos_y - fabs((fabs(g->player->pos_x - node->v_intersectionx) * tan(node->angle)));
 	else
 		node->v_intersectiony = g->player->pos_y + fabs((fabs(g->player->pos_x - node->v_intersectionx) * tan(node->angle)));
-	
 	while (check_is_wall(g, node, 'v') == false)
 	{
 		node->v_intersectionx += xstep;
 		node->v_intersectiony += ystep;
 	}
-	 return (sqrt(fabs(g->player->pos_x - node->v_intersectionx) * fabs(g->player->pos_x - node->v_intersectionx) + (fabs(g->player->pos_y - node->v_intersectiony) * fabs(g->player->pos_y - node->v_intersectiony))));
+	return (distance_to_wall(g, node->v_intersectionx, node->v_intersectiony));
 }
 
 void	get_intersection_p(t_var *g, t_ray *node)
@@ -112,13 +122,13 @@ void	get_intersection_p(t_var *g, t_ray *node)
 	v = vertical(g, node);
 	if (h < v)
 	{
-		node->distance_wall = h;
+		node->distance_wall = fabs(h * cos(fabs(g->player->angle - node->angle)));
 		node->x_intersection = node->h_intersectionx;
 		node->y_intersection = node->h_intersectiony;
 	}
 	else
 	{
-		node->distance_wall = v;
+		node->distance_wall = fabs(v * cos(fabs(g->player->angle - node->angle)));
 		node->x_intersection = node->v_intersectionx;
 		node->y_intersection = node->v_intersectiony;
 	}
