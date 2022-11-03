@@ -6,17 +6,16 @@
 /*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:06:31 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/27 07:21:02 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/02 22:12:11 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
 
-
 bool	valid_index(int j, char *prev_line, char *next_line)
 {
-	return (prev_line && j < (int) ft_strlen(prev_line) 
-			&& next_line && j < (int) ft_strlen(next_line));
+	return (prev_line && j <= (int) ft_strlen(prev_line)
+		&& next_line && j <= (int) ft_strlen(next_line));
 }
 
 bool	check_circumference(int j, char *line, char *prev_line, char *next_line)
@@ -26,18 +25,18 @@ bool	check_circumference(int j, char *line, char *prev_line, char *next_line)
 	str = "01NWSE";
 	if (!ft_strchr(str, line[j - 1]) || !ft_strchr(str, line[j + 1]))
 		return (false);
-	else if (!prev_line || !ft_strchr(str, prev_line[j]))
+	else if (!ft_strchr(str, prev_line[j]))
 		return (false);
-	else if(!next_line || !ft_strchr(str, next_line[j]))
+	else if (!ft_strchr(str, next_line[j]))
 		return (false);
 	return (true);
 }
 
 void	check_map_validity(t_var *g, char **map)
 {
-	int		i;
-	int		j;
-	
+	int	i;
+	int	j;
+
 	i = -1;
 	while (map[++i])
 	{
@@ -49,8 +48,8 @@ void	check_map_validity(t_var *g, char **map)
 				|| map[i][j] == 'S')
 			{
 				if (i == 0 || !valid_index(j, map[i - 1], map[i + 1]))
-					ft_put_error("Map must be surrounded by walls");
-				if (!check_circumference(j, map[i], map[i - 1], map[i + 1]))
+					ft_put_error("Map must be surrounded by walls here");
+				if (j == 0 || !check_circumference(j, map[i], map[i - 1], map[i + 1]))
 					ft_put_error("Map must be surrounded by walls");
 				save_player_position(g, map[i][j], j, i);
 			}
@@ -80,7 +79,7 @@ void	store_check_map_validity(t_var *g, t_game *head, int count)
 	check_map_validity(g, g->data->map);
 }
 
-int		count_map_lines(t_game *head)
+int	count_map_lines(t_game *head)
 {
 	int		count;
 	t_game	*temp;
