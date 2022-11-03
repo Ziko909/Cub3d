@@ -3,14 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   start_processing.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 20:52:27 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/17 15:20:29 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/11/01 23:01:13 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/cub3d.h"
+
+bool	ft_strcmp(char *str1, char *str2)
+{
+	while (*str1 || *str2)
+	{
+		if (*str1 != *str2)
+			return (false);
+		str1++;
+		str2++;
+	}
+	return (true);
+}
 
 bool	check_file_extention(char *file_name)
 {
@@ -19,7 +31,7 @@ bool	check_file_extention(char *file_name)
 	extension = ft_strrchr(file_name, '.');
 	if (extension == NULL)
 		return (false);
-	if (strcmp(extension, ".cub") != 0)
+	if (ft_strcmp(extension, ".cub") == false)
 		return (false);
 	return (true);
 }
