@@ -44,7 +44,7 @@ INC				:= include
 
 # ******************************** Compiler ***********************************
 CC				:= cc
-CFLAGS			:= -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS			:= -Wall -Wextra -g -fsanitize=address
 
 # ******************************** Shell cmd **********************************
 RM				:= rm -rf
@@ -63,7 +63,7 @@ $(NAME) : $(LIBFT) $(OBJ) $(OBJ_GNL)
 	@$(CC) -I $(INC) -I -Lmlx -lmlx -framework OpenGL -framework AppKit -I $(INC)/get_next_line $(CFLAGS) $(LIBFT) $(OBJ) $(OBJ_GNL) -o $(NAME)
 	@echo "$(BYellow) Enjoy $(DFL)"
 
-$(OBJDIR)/%.o : %.c
+$(OBJDIR)/%.o : %.c $(INC)/cub3d.h
 	@$(MD) $(dir $@)
 	@$(CC) -I $(INC) -Imlx -I $(INC)/get_next_line $(CFLAGS) -c $< -o $@
 	@echo "$(BGreen) The Object file $(BCyan) ~ $< $(BGreen): was generated $(DFL)";
