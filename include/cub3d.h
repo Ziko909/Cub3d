@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 05:20:15 by zaabou            #+#    #+#             */
-/*   Updated: 2022/11/03 11:05:31 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/05 20:49:02 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,26 @@ typedef struct s_game
     struct s_game	*next;
 } t_game;
 
+typedef struct  s_slice
+{
+    int top;
+    int bottom;
+    int width;
+    int height;
+} t_slice;
+
+typedef struct  s_tex
+{
+    void    *img;   
+	char	*addr;
+	int		bpp;
+	int		line_len;
+	int		endian;
+    int     height;
+    int     width;
+} t_tex;
+
+
 typedef struct player
 {
     double	pos_x;
@@ -58,7 +78,14 @@ typedef struct ray
     double	angle;
     double	distance_wall;
     double	distance_rays;
+    double  distance_to_pp;
     int		id;
+    int     hit_vertical;
+    int     hit_horizontal;
+    int     slice_top;
+    int     slice_bottom;
+    int     slice_width;
+    int     slice_height;
     struct ray	*next;
 }t_ray;
 
@@ -93,6 +120,9 @@ typedef struct s_var
     t_ray		**head;
     t_mlx		*mlx_ptr;
     t_data		*data;
+    t_ray       *ray;
+    t_slice     *slice;
+    t_tex       *tex;
 } t_var;
 
 
@@ -179,4 +209,14 @@ void	fill_img(t_var *g);
 int		ft_release_key(t_var *g);
 bool	is_wall(t_var *g, int x, int y);
 int		distance(t_var *g, int c);
+
+// textures
+void    init_textures (t_var *g, t_tex *tex);
+void    draw_wall(t_var *g);
+void    drawing_wall_slices (t_ray *ray, t_var *g, t_tex *tex, int tex_nb);
+void    finding_wall_top_bottom(t_ray *ray);
+int     finding_accurate_texture(t_ray *ray);
+int     get_x_cordinate(t_ray *ray);
+int     get_y_cordinate(t_ray *ray, int y);
+
 #endif
