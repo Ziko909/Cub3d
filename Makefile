@@ -31,7 +31,8 @@ NAME			:=	cub3d
 
 SRC				:= src/main_function/cub3D.c src/ft_parse/ft_check.c src/ft_parse/ft_check_map.c src/ft_parse/ft_check_map_utils.c \
 					src/ft_parse/ft_check_textures.c src/ft_parse/ft_check_textures_utils.c src/ft_parse/ft_lists.c \
-					src/ft_parse/start_processing.c src/raycasting/raycasting.c src/raycasting/raycasting2.c src/mlx/mlx.c src/rendring/mini_map.c src/rendring/rendering.c
+					src/ft_parse/start_processing.c src/raycasting/raycasting.c src/raycasting/raycasting2.c src/mlx/mlx.c 
+					src/rendring/mini_map.c src/rendring/rendering.c src/rendring/draw_walls.c src/rendring/init_textures.c \
 
 SRC_GNL			:= get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
 
