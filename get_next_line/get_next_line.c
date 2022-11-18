@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
+/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/16 22:30:45 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/10/09 00:51:58 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/11/19 00:16:17 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	*ft_read(int fd, char *buffer)
 			break ;
 		}
 		temp_str[read_bytes] = '\0';
-		buffer = ft_strjoin(buffer, temp_str);
+		buffer = join_str(buffer, temp_str);
 		free (temp_str);
 	}
 	return (buffer);
