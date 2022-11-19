@@ -3,119 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 06:11:49 by zaabou            #+#    #+#             */
-/*   Updated: 2022/11/03 09:46:19 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/10 15:40:24 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <cub3d.h>
 
-void	ft_update_pos_left_right(t_var *g, int key)
+void	direction(t_ray *node)
 {
-	double	new_x;
-	double	new_y;
-	double	angle;
-
-	angle = g->player->angle + (90 * (PI / 180));
-	normalize_angle(&angle);
-	if (key == 0)
-	{
-		new_x = (g->player->pos_x - (g->player->m_speed * cos(angle)));
-		new_y = (g->player->pos_y - (g->player->m_speed * sin(angle)));
-		if (is_wall(g, new_x, new_y) == false)
-		{
-			g->player->pos_x = new_x;
-			g->player->pos_y = new_y;
-		}
-	}
-	if (key == 2)
-	{
-		new_x = (g->player->pos_x + (g->player->m_speed * cos(angle)));
-		new_y = (g->player->pos_y + (g->player->m_speed * sin(angle)));
-		if (is_wall(g, new_x, new_y) == false)
-		{
-			g->player->pos_x = new_x;
-			g->player->pos_y = new_y;
-		}
-	}
-}
-
-void	ft_update_pos_up_down(t_var *g, int key)
-{
-	double	new_x;
-	double	new_y;
-
-	if (key == 13)
-	{
-		new_x = g->player->pos_x + (g->player->m_speed * cos(g->player->angle));
-		new_y = g->player->pos_y + (g->player->m_speed * sin(g->player->angle));
-		if (is_wall(g, new_x, new_y) == false)
-		{
-			g->player->pos_x = new_x;
-			g->player->pos_y = new_y;
-		}
-	}
-	else if (key == 1)
-	{
-		new_x = g->player->pos_x - (g->player->m_speed * cos(g->player->angle));
-		new_y = g->player->pos_y - (g->player->m_speed * sin(g->player->angle));
-		if (is_wall(g, new_x, new_y) == false)
-		{
-			g->player->pos_x = new_x;
-			g->player->pos_y = new_y;
-		}
-	}
-}
-
-void	fill_img(t_var *g)
-{
-	int	x;
-	int	y;
-	int	color;
-
-	y = 1;
-	color = g->data->c_color;
-	while (y <= WIN_HEIGHT)
-	{
-		if (y == (WIN_HEIGHT / 2))
-			color = g->data->f_color;
-		x = 1;
-		while (x <= WIN_WIDTH)
-		{
-			if (x >= 550 && x <= 950 && y >= 700 && y <= 900)
-				ft_colorize_pixel(g, x, y, 0x00000000);
-			else
-				ft_colorize_pixel(g, x, y, color);
-			x++;
-		}
-		y++;
-	}
-}
-
-int	ft_release_key(t_var *g)
-{
-	g->player->turn = 0;
-	g->player->move = 0;
-	return (0);
-}
-
-int	ft_press_key(int key, t_var *g)
-{
-	if (key == 0)
-		ft_update_pos_left_right(g, key);
-	if (key == 2)
-		ft_update_pos_left_right(g, key);
-	if (key == 1)
-		ft_update_pos_up_down(g, key);
-	if (key == 13)
-		ft_update_pos_up_down(g, key);
-	if (key == 124)
-		g->player->turn = 1;
-	if (key == 123)
-		g->player->turn = -1;
-	return (0);
+	if (node->angle >= 0 && node->angle <= PI)
+		node->facing_up = false;
+	else
+		node->facing_up = true;
+	if (node->angle >= (PI / 2) && node->angle <= ((3 * PI) / 2))
+		node->facing_right = false;
+	else
+		node->facing_right = true;
 }
 
 void	ft_add_back(t_ray **head, t_ray *new)
@@ -133,17 +39,24 @@ void	ft_add_back(t_ray **head, t_ray *new)
 	}
 }
 
-t_ray	*ft_creat_node(int count)
+t_ray	*ft_creat_node(int count, t_var *g)
 {
 	t_ray	*new;
 
 	new = ft_calloc(1, sizeof(t_ray));
+	if (!new)
+		ft_put_error(g, "Allocation Failed");
 	new->id = count;
 	new->angle = 0;
 	new->distance_wall = 0;
 	new->distance_rays = (FOV * (PI / 180)) / WIN_WIDTH;
 	new->x_intersection = 0;
 	new->y_intersection = 0;
+	new->distance_to_pp = 0;
+	new->slice_height = 0;
+	new->slice_bottom = 0;
+	new->slice_top = 0;
+	new->slice_bottom = 0;
 	return (new);
 }
 
@@ -155,7 +68,7 @@ void	creat_rays_list(t_var *g)
 	count = 0;
 	while (count < NUM_RAYS)
 	{
-		node = ft_creat_node(count);
+		node = ft_creat_node(count, g);
 		ft_add_back(g->head, node);
 		count++;
 	}
@@ -172,6 +85,7 @@ void	raycasting(t_var *g)
 	{
 		tmp->angle = angle;
 		normalize_angle(&tmp->angle);
+		direction(tmp);
 		get_intersection_p(g, tmp);
 		angle += tmp->distance_rays;
 		tmp = tmp->next;
