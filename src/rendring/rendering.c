@@ -6,7 +6,7 @@
 /*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:49:51 by zaabou            #+#    #+#             */
-/*   Updated: 2022/11/03 11:35:06 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/18 17:20:44 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,7 @@ void	normalize_angle(double *angle)
 
 int	ft_rendering(t_var *g)
 {
-	if (g->player->turn == 1)
-		g->player->angle += g->player->r_speed;
-	if (g->player->turn == -1)
-		g->player->angle -= g->player->r_speed;
-	ft_release_key(g);
+	ft_check_movements(g);
 	normalize_angle(&(g->player->angle));
 	fill_img(g);
 	raycasting(g);
@@ -66,7 +62,7 @@ void	ft_draw_line(t_var *g, int x_e, int y_e)
 	i = 0;
 	while (i <= steps)
 	{
-		ft_colorize_pixel(g, round(x), round(y), rays_color);
+		ft_colorize_pixel(g, round(x), round(y), LINE_COLOR);
 		x += increment_x;
 		y += increment_y;
 		i++;
