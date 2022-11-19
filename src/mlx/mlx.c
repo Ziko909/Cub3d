@@ -6,7 +6,7 @@
 /*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:36:49 by zaabou            #+#    #+#             */
-/*   Updated: 2022/11/19 00:16:51 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/19 04:21:05 by zaabou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ void	ft_colorize_pixel(t_var *g, int x, int y, int color)
 int	destroy_win(t_var *g)
 {
 	ft_free(g);
-	system("leaks cub3d");
 	exit(EXIT_SUCCESS);
 	return (1);
 }
