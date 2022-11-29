@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/04 05:20:15 by zaabou            #+#    #+#             */
-/*   Updated: 2022/11/19 00:56:13 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/29 05:06:06 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ typedef struct mlx
 	int		bpp;
 	int		size_len;
 	int		endian;
+	int		press_x;
 }t_mlx;
 
 typedef struct data
@@ -187,6 +188,7 @@ void	ft_update_pos_left(t_var *g);
 void	ft_mlx(t_var *g);
 int		ft_press_key(int key, t_var *g);
 void	ft_create_new_img(t_var *g);
+int		ft_move_mouse(int x, int y, t_var *g);
 int		destroy_win(t_var *g);
 
 // rays
@@ -223,13 +225,13 @@ char	*join_str(char *s1, char *s2);
 bool	valid_index(int j, char *prev_line, char *next_line);
 
 // textures
-void    init_textures (t_var *g, t_tex *tex);
-void    draw_wall(t_var *g);
-void    drawing_wall_slices (t_ray *ray, t_var *g, t_tex *tex, int tex_nb);
-void    finding_wall_top_bottom(t_ray *ray);
-int     finding_accurate_texture(t_ray *ray);
-int     get_x_cordinate(t_ray *ray);
-int     get_y_cordinate(t_ray *ray, int y);
+void	init_textures(t_var *g);
+void	draw_wall(t_var *g);
+void	finding_wall_top_bottom(t_ray *ray);
+int		finding_accurate_texture(t_ray *ray);
+int		get_x_cordinate(t_ray *ray, t_tex *tex, int tex_nb);
+int		get_y_cordinate(t_ray *ray, int y, t_tex *tex, int tex_nb);
+void	drawing_wall_slices(t_ray *ray, t_var *g, t_tex *tex, int tex_nb);
 
 // minimap
 void	put_elements(t_var *g);
