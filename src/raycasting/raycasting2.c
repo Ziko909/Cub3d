@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycasting2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 10:05:29 by zaabou            #+#    #+#             */
-/*   Updated: 2022/11/03 10:18:25 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/29 05:01:09 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,12 +122,14 @@ void	get_intersection_p(t_var *g, t_ray *node)
 	v = vertical(g, node);
 	if (h < v)
 	{
+		node->hit_horizontal = 1;
 		node->distance_wall = fabs(h * cos(fabs(g->player->angle - node->angle)));
 		node->x_intersection = node->h_intersectionx;
 		node->y_intersection = node->h_intersectiony;
 	}
 	else
 	{
+		node->hit_horizontal = 0;
 		node->distance_wall = fabs(v * cos(fabs(g->player->angle - node->angle)));
 		node->x_intersection = node->v_intersectionx;
 		node->y_intersection = node->v_intersectiony;
