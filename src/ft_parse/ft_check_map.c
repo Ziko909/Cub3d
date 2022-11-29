@@ -6,7 +6,7 @@
 /*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 21:06:31 by rel-hach          #+#    #+#             */
-/*   Updated: 2022/11/10 21:33:51 by rel-hach         ###   ########.fr       */
+/*   Updated: 2022/11/29 04:44:45 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ void	store_check_map_validity(t_var *g, t_game *head, int count)
 	check_map_validity(g, g->data->map);
 }
 
-int	count_map_lines(t_game *head, t_var *g)
+int	count_map_lines(t_var *g, t_game *head)
 {
 	int		count;
 	t_game	*temp;
@@ -106,6 +106,6 @@ void	ft_check_map(t_var *g, t_game *head)
 	count = 0;
 	while (temp->next && ft_strncmp(temp->line, "\n", 1) == 0)
 		temp = temp->next;
-	count = count_map_lines(temp, g);
+	count = count_map_lines(g, temp);
 	store_check_map_validity(g, temp, count);
 }
