@@ -33,7 +33,7 @@ SRC				:= src/main_function/cub3D.c src/ft_parse/ft_check.c src/ft_parse/ft_chec
 					src/ft_parse/ft_check_textures.c src/ft_parse/ft_check_textures_utils.c src/ft_parse/ft_lists.c \
 					src/ft_parse/start_processing.c src/errors/error.c src/player/movements.c src/player/player_info.c src/raycasting/raycasting.c src/raycasting/raycasting2.c src/mlx/mlx.c src/mlx/mlx_1.c  \
 					src/rendring/mini_map.c src/rendring/rendering.c src/memory_management/free_data.c src/memory_management/init_data.c \
-					src/rendring/draw_walls.c src/rendring/init_textures.c \
+					src/rendring/draw_walls.c src/rendring/init_textures.c src/rendring/draw_walls_utils.c\
 
 SRC_GNL			:= get_next_line/get_next_line.c get_next_line/get_next_line_utils.c \
 
@@ -46,7 +46,7 @@ INC				:= include
 
 # ******************************** Compiler ***********************************
 CC				:= cc
-CFLAGS			:= -Wall -Wextra #-g -fsanitize=address
+CFLAGS			:= -Wall -Wextra -g -fsanitize=address
 
 # ******************************** Shell cmd **********************************
 RM				:= rm -rf
@@ -74,7 +74,7 @@ re : fclean all
 
 clean :
 	@$(RM) $(OBJDIR)
-	@make clean -C lib/libft
+	@make clean -C lib/libft > /dev/null
 fclean : clean
 	@$(RM) $(NAME)
 .PHONY : $(LIB) $(LIBFT)
