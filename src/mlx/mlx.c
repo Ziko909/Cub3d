@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mlx.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:36:49 by zaabou            #+#    #+#             */
-/*   Updated: 2022/11/19 04:21:05 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/29 05:44:11 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,9 @@ void	ft_mlx(t_var *g)
 			&(g->mlx_ptr->bpp),
 			&(g->mlx_ptr->size_len),
 			&(g->mlx_ptr->endian));
+	init_textures(g);
 	mlx_hook(g->mlx_ptr->ptr_win, 17, 0, destroy_win, g);
+	mlx_hook(g->mlx_ptr->ptr_win, 6, 1L << 4, ft_move_mouse, g);
 	mlx_hook(g->mlx_ptr->ptr_win, 2, 1L << 0, ft_press_key, g);
 	mlx_hook(g->mlx_ptr->ptr_win, 3, 1L << 1, ft_release_key, g);
 	mlx_loop_hook(g->mlx_ptr->ptr_mlx, ft_rendering, g);
@@ -61,6 +63,20 @@ void	ft_colorize_pixel(t_var *g, int x, int y, int color)
 	pixel = (int *)(g->mlx_ptr->ptr_img_data + (y * g->mlx_ptr->size_len)
 			+ (x * g->mlx_ptr->bpp / 8));
 	*pixel = color;
+}
+
+int	ft_move_mouse(int x, int y, t_var *g)
+{
+	if (g->mlx_ptr->press_x == -1)
+		g->mlx_ptr->press_x = x;
+	if (x >= 0 && x <= WIN_WIDTH && y >= 0 && y <= WIN_HEIGHT)
+		g->player->angle += (x - g->mlx_ptr->press_x) * ((2 * PI) / WIN_WIDTH);
+	if (x < 0 && x > WIN_WIDTH && y < 0 && y > WIN_HEIGHT)
+		g->mlx_ptr->press_x = -1;
+	else
+		g->mlx_ptr->press_x = x;
+	normalize_angle(&g->player->angle);
+	return (0);
 }
 
 int	destroy_win(t_var *g)
