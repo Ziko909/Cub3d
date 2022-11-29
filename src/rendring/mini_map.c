@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mini_map.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zaabou <zaabou@student.1337.ma>            +#+  +:+       +#+        */
+/*   By: rel-hach <rel-hach@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 12:43:04 by zaabou            #+#    #+#             */
-/*   Updated: 2022/11/03 10:45:58 by zaabou           ###   ########.fr       */
+/*   Updated: 2022/11/29 05:48:39 by rel-hach         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,5 +84,31 @@ void	put_elements(t_var *g)
 			ey = (y * TILE_SIZE) + distance(g, 'y');
 			ft_colorize_img(g, color, ex, ey);
 		}
+	}
+}
+
+void	ft_draw_line(t_var *g, int x_e, int y_e)
+{
+	float	steps;
+	float	increment_x;
+	float	increment_y;
+	float	x;
+	float	y;
+
+	x = g->player->pos_x + distance(g, 'x');
+	y = g->player->pos_y + distance(g, 'y');
+	if (fabs(x_e - (g->player->pos_x + distance(g, 'x')))
+		>= fabs(y_e - (g->player->pos_y + distance(g, 'y'))))
+		steps = fabs(x_e - (g->player->pos_x + distance(g, 'x')));
+	else
+		steps = fabs(y_e - (g->player->pos_y + distance(g, 'y')));
+	increment_x = (x_e - (g->player->pos_x + distance(g, 'x'))) / steps;
+	increment_y = (y_e - (g->player->pos_y + distance(g, 'y'))) / steps;
+	while (steps >= 0)
+	{
+		ft_colorize_pixel(g, round(x), round(y), LINE_COLOR);
+		x += increment_x;
+		y += increment_y;
+		steps--;
 	}
 }
