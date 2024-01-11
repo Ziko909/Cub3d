@@ -1,8 +1,8 @@
-NO ./
-SO ./
-WE ./
-EA ./
-F 0,0,0
+NO ./textures/graphiti/north.xpm
+SO ./textures/graphiti/einstein.xpm
+WE ./textures/graphiti/west.xpm
+EA ./textures/graphiti/east.xpm
+F 2,14,22
 C 66,191,255
 
 
