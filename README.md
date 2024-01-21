@@ -2,6 +2,14 @@
 
 ![intro](cub3d.gif)
 
+
+- [Description](#description)
+- [Bonus Part](#bonus-part)
+- [Usage](#usage)
+- [Helpful Resources](#helpful-resources)
+- [Related Project](related-project)
+- [Contact Information](contact-information)
+
 ## Description
 cub3D is a project inspired by the legendary game Wolfenstein 3D. It is a first-person perspective maze exploration game that utilizes ray-casting techniques to create a dynamic view inside the maze. The goal of the game is to navigate through the maze and find your way out.
 
